@@ -24,8 +24,8 @@ export default function CharacterSearch() {
     const [canClick, setCanClick] = useState(false);
 
     const {post, setPost}:any = useContext(CharacterContext);
-    
-//Disable Search conditionally
+
+//Disable Search button
     useEffect(() => {
         if(searchF.length){
             setCanClick(true);
@@ -82,17 +82,17 @@ const getCharacter = () =>{
     const getMounts = () => axios.get(mountsApi);
     const getMinions = () => axios.get(minionsApi);
 
-function handleSearch(e:string){
-    setText(e);
-}
-
-function handleChange(){
-    if(searchF){
-        setLoading(true);
-        getCharacter();
-        setText('');
+    function handleSearch(e:string){
+        setText(e);
     }
-}
+
+    function handleChange(){
+        if(searchF){
+            setLoading(true);
+            getCharacter();
+            setText('');
+        }
+    }
 
 return(
 <>

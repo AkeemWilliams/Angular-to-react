@@ -10,7 +10,7 @@ export function CharacterPanel({userData}:any){
     const achievementCompletion = Math.round(userData.character.achievements.length/2739 * 100);
 
     return(
-    
+
     <section className="char-section">
         {userData ? (
                <div className="character-sheet">
@@ -41,12 +41,12 @@ export function CharacterPanel({userData}:any){
                        <span>{(!userData.character.minions ? 0 : userData.character.minions.length)} of {(userData.minions ?? []).count} Collected </span>
                    </div>
                </section>
-       
+
            </div>
         ) : (
         <div></div>
         )}
-     
+
     </section>
     
     

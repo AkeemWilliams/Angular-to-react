@@ -1,6 +1,5 @@
-import {Link } from "react-router-dom";
-import { Button, InputAdornment } from '@mui/material';
-import { Key, useContext, useState } from 'react';
+import { InputAdornment } from '@mui/material';
+import { useContext, useState } from 'react';
 import { CharacterContext } from '../CharacterContext';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -32,7 +31,6 @@ const handleSearchChange = (e:string) => {
 const handleChange = (event: SelectChangeEvent) => {
     setSelection(event.target.value);
 };
-
 
 const handlemountClick = (mount:ResultsSubInt) =>{
     setMount(mount)

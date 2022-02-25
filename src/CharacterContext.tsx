@@ -1,13 +1,10 @@
-import { ReactNode, createContext,useContext, useReducer, useState } from 'react';
-
+import { ReactNode, createContext, useState } from 'react';
 
 type CharacterContextProp = {children : ReactNode};
 
-
-
 export const CharacterContext = createContext({});
 
-//Explore better context implementation
+// TODO:Kent Dodds type implementation
 // export function CharacterProvider({children}:CharacterContextProp){
 //     const [post, setPost] = useState(null);
 //     const value = {post, setPost};
