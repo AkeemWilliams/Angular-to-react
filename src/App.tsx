@@ -17,9 +17,8 @@ import { Button } from '@mui/material';
 function App() {
   const [post, setPost] = useState(null);
   const value = {post, setPost};
-  
+
   const character = useContext(CharacterContext);
-  console.log(Object.entries(character));
 
   return (
     <ThemeProvider theme={myTheme}>

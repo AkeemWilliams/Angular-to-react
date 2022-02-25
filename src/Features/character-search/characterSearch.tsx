@@ -73,8 +73,8 @@ const getCharacter = () =>{
 const getMounts = () => axios.get(mountsApi);
 const getMinions = () => axios.get(minionsApi);
 
-function handleSearch(e:any){
-    setText(e.target.value);
+function handleSearch(e:string){
+    setText(e);
 }
 
 function handleChange(){
@@ -92,7 +92,7 @@ return(
                 Collections. Be it from seasoned players to sprouts, this tool is made for all collectors. </p>
 
             <TextField id="filled-basic" label="Character Url or ID" variant="filled" value={searchF}
-                onChange={handleSearch} />
+                onChange={(e) => handleSearch(e.target.value)} />
 
             <Button variant="contained" onClick={handleChange}>Profile Character</Button>
             <div></div>
