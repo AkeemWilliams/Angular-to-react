@@ -28,7 +28,6 @@ section.dashboard-search-area {
     p {
         line-height: 2;
         font-size: 1.2em;
-        font-weight: 100;
         margin-bottom: 0;
         &.err-msg{
             margin: -16px 0 10px ;
@@ -50,15 +49,15 @@ section.dashboard-search-area {
         align-items: center;
         text-align: center;
     
-        .char-search {
+        .MuiFormControl-root {
             width: 100%;
             margin: 20px auto 0;
             max-width: 40em;
 
         }
         button {
-            width: 150px;
-            margin: 0 auto;
+            // width: 150px;
+            margin: 1.34375em auto;
         }
     }
 }

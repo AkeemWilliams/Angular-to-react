@@ -1,0 +1,64 @@
+export interface Character {
+    id:                    number;
+    name:                  string;
+    titleId:               number;
+    worldId:               number;
+    iconUrl:               string;
+    imageUrl:              string;
+    profile:               string;
+    clanId:                null;
+    genderId:              number;
+    guardianId:            number;
+    city:                  string;
+    gcId:                  number;
+    birthdate:             string;
+    fcId:                  null;
+    legacy:                boolean;
+    achievementsPrivate:   boolean;
+    createdAt:             number;
+    updatedAt:             number;
+    deleted:               boolean;
+    fcName:                null;
+    clanId2:               number;
+    private:               boolean;
+    achievementRank:       string;
+    globalAchievementRank: string;
+    mountRank:             string;
+    globalMountRank:       string;
+    minionRank:            string;
+    globalMinionRank:      string;
+    gcName:                string;
+    raceName:              null;
+    tribeName:             null;
+    genderName:            string;
+    guardianName:          string;
+    dcId:                  number;
+    dcName:                string;
+    worldName:             string;
+    mounts:                Achievement[];
+    minions:               Achievement[];
+    achievements:          Achievement[];
+    barding:               (any)[] | null;
+    blueSpell:             (any)[] | null;
+    emote:                 (any)[] | null;
+    fish:                  (any)[] | null;
+    hair:                  (any)[] | null;
+    hunt:                  (any)[] | null;
+    leve:                  (any)[] | null;
+    masterBook:            (any)[] | null;
+    orchestrion:           (any)[] | null;
+    sightseeing:           (any)[] | null;
+    relic:                 (any)[] | null;
+    triadCard:             (any)[] | null;
+    triadNpc:              (any)[] | null;
+    fashion:               (any)[] | null;
+    bozjaNote:             (any)[] | null;
+    status:                string;
+    wouldUpdateButMaint:   boolean;
+    deployTime:            number;
+}
+
+export interface Achievement {
+    id:   number;
+    date: number;
+}
