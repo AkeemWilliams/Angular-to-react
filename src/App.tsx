@@ -13,7 +13,6 @@ import  Minions  from "./Pages/Minions";
 import  Mounts  from "./Pages/Mounts";
 import { Button } from '@mui/material';
 
-
 function App() {
   const [post, setPost] = useState(null);
   const value = {post, setPost};

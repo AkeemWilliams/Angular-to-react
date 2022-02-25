@@ -13,7 +13,6 @@ import { ResultsSubInt } from "../Types/MountTypes";
 
 export default function Mounts() {
 const {post, setpost}:any = useContext(CharacterContext);
-console.log(post)
 const [open, setOpen] = useState(false);
 const [selectedMount, setMount] = useState({});
 
@@ -22,26 +21,20 @@ const menuItems = ['All', 'Collected', 'Uncollected'];
 const [searchText, setSearchText] = useState("");
 const [filMounts, setFilMounts] = useState((post.mounts.results ?? []))
 
-const handleSearchChange = (ee:string) => {
-    setSearchText(ee)
+const handleSearchChange = (e:string) => {
+    setSearchText(e)
     setFilMounts(
-        post.mounts?.results?.filter((bbd:ResultsSubInt )=> bbd.name.toLowerCase().includes(ee.toLowerCase())
+        post.mounts?.results?.filter((mount:ResultsSubInt )=> mount.name.toLowerCase().includes(e.toLowerCase())
     )
 )
 };
 
 const handleChange = (event: SelectChangeEvent) => {
     setSelection(event.target.value);
-    console.log(selection);
-
-    const minions = document.querySelectorAll(".minion-box");
-    const collectedminions = document.querySelectorAll(".minion-box.owned");
-
 };
 
 
-const handlemountClick = (mount:any) =>{
-    console.log('yo', mount, open);
+const handlemountClick = (mount:ResultsSubInt) =>{
     setMount(mount)
     setOpen(true);
 }
@@ -50,7 +43,6 @@ if(post == undefined){
     window.location.href = "/";
 }
 
-console.log(post);
 return (
 <>
     <div>
@@ -84,12 +76,7 @@ return (
                     />
             </div>
         </section>
-        {/* <div *ngIf="showSpinner" className="spin-overlay">
-            <mat-spinner></mat-spinner>
-
-        </div> */}
         <section>
-            {/* <div className="err-cont" *ngIf="errorShow">{{errMsg}}</div> */}
             <div className="items-collected">
                 <p>
                     {post.character.mounts.length} of {post.mounts.count} obtained.
@@ -98,7 +85,7 @@ return (
 
             <div className="minion-container">
 
-                {filMounts.map((mount:any, index: Key | null | undefined)=>{
+                {filMounts.map((mount:ResultsSubInt)=>{
                 return(
                 <div className={`minion-box ${selection} ${mount.isOwned ? "owned" : "" }`} key={mount.id} onClick={()=>
                     handlemountClick(mount)}>

@@ -14,18 +14,16 @@ import { ResultsSubInt } from "../Types/MountTypes";
 
 export default function Minions() {
     const {post, setpost}:any = useContext(CharacterContext);
-
     const [open, setOpen] = useState(false);
     const [selectedMinion, setMinion] = useState({});
-
     const [selection, setSelection] = useState('All');
     const [searchText, setSearchText] = useState("");
     const [filMinoins, setFilMinoins] = useState((post.minions.results ?? []))
 
-const handleSearchChange = (ee:string) => {
-    setSearchText(ee)
+const handleSearchChange = (e:string) => {
+    setSearchText(e)
     setFilMinoins(
-        post.minions?.results?.filter((bbd:ResultsSubInt )=> bbd.name.toLowerCase().includes(ee.toLowerCase())
+        post.minions?.results?.filter((minion:ResultsSubInt )=> minion.name.toLowerCase().includes(e.toLowerCase())
     )
 )
 };
@@ -36,8 +34,7 @@ const handleSearchChange = (ee:string) => {
       };
 
 
-    const handleMinionClick = (minion:any) =>{
-        console.log('yo', minion, open);
+    const handleMinionClick = (minion:ResultsSubInt) =>{
         setMinion(minion)
         setOpen(true);
     }
@@ -80,12 +77,7 @@ const handleSearchChange = (ee:string) => {
                     />
         </div>
     </section>
-    {/* <div *ngIf="showSpinner" className="spin-overlay">
-        <mat-spinner></mat-spinner>
-      
-      </div> */}
     <section>
-        {/* <div className="err-cont" *ngIf="errorShow">{{errMsg}}</div> */}
         <div  className="items-collected">
             <p>
                 {post.character.minions.length} of {post.minions.count} obtained.
@@ -93,7 +85,7 @@ const handleSearchChange = (ee:string) => {
         </div>
 
         <div className="minion-container">
-            {filMinoins.map((minion:any, index: Key | null | undefined)=>{
+            {filMinoins.map((minion:ResultsSubInt)=>{
                 return(
                 <div className={`minion-box ${selection} ${minion.isOwned ? "owned" : ""}`} key={minion.id} onClick={() => handleMinionClick(minion)}>
                 <img src={minion.image} alt={minion.name}/>

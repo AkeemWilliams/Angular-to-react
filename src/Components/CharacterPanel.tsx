@@ -1,18 +1,14 @@
 
 import ProgressBar from '../Components/ProgressBar';
-
-function Progress(){
-
-}
+import { Character } from '../Types/CharacterTypes';
+import { Mounts } from '../Types/MountTypes';
+import { Minions } from '../Types/MinionTypes';
 
 export function CharacterPanel({userData}:any){
     const mountCompletion = Math.round(userData.character.mounts.length/userData.mounts.count * 100);
     const minionCompletion = Math.round(userData.character.minions.length/userData.minions.count * 100);
     const achievementCompletion = Math.round(userData.character.achievements.length/2739 * 100);
 
-    if(userData){
-    console.log(userData, 'userdata');
-    }
     return(
     
     <section className="char-section">

@@ -52,7 +52,6 @@ export default function CustomizedDialogs(props:any) {
   const { open, data, setOpen} = props;
 //   const [open, setOpen] = React.useState(isOpen);
 
- console.log(data, open);
   const handleClose = () => {
      setOpen(false);
   };
@@ -64,9 +63,7 @@ export default function CustomizedDialogs(props:any) {
         aria-labelledby="customized-dialog-title"
         open={open}
       >
-        {/* <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Modal title
-        </BootstrapDialogTitle> */}
+
         <DialogContent dividers>
         <div className="dia-wrap" style={{background:`url(${data.image})`}}>
             <div className="inner-wrap">

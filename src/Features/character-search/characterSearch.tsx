@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useEffect } from 'react';
 import axios from "axios";
 import { useContext } from 'react';
 import { CharacterContext } from '../../CharacterContext';
@@ -6,29 +6,37 @@ import  {CharacterPanel}  from '../../Components/CharacterPanel';
 import { Character } from '../../Types/CharacterTypes';
 import { Mounts} from '../../Types/MountTypes';
 import { Minions} from '../../Types/MinionTypes'
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import './char-search.scss';
 
-// const uerl = 'https://ffxivcollect.com/api/characters/37684988';
 const mountsApi = 'https://ffxivcollect.com/api/mounts';
 const minionsApi = 'https://ffxivcollect.com/api/minions';
 const MemoizedCPanel = memo(CharacterPanel);
 
-
-
 export default function CharacterSearch() {
 
-const [searchF, setText] = useState('');
-const {post, setPost}:any = useContext(CharacterContext);
+    const [searchF, setText] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [canClick, setCanClick] = useState(false);
 
+    const {post, setPost}:any = useContext(CharacterContext);
+    
+//Disable Search conditionally
+    useEffect(() => {
+        if(searchF.length){
+            setCanClick(true);
+        }else{
+            setCanClick(false);
+        }
+    });
 
 const getCharacter = () =>{
     let charcode = (searchF).match(/\d+/);
     let char = parseInt(charcode ? charcode[0] : 'undefed')
-    console.log(searchF, char);
 
     const characterApi = `http://localhost:3001/samplere`;
     if(char){
@@ -61,17 +69,18 @@ const getCharacter = () =>{
          mounts.results?.sort((a , b ) => a.name.localeCompare(b.name))
          minions.results?.sort((a , b ) => a.name.localeCompare(b.name))
 
-          setPost({character : character, mounts : mounts, minions : minions})
+        setPost({character : character, mounts : mounts, minions : minions})
+        setLoading(false);
 
-          }).catch()
+          }).catch((error)=> console.log('Your Api dun messed up.'))
           .finally()
         )
     }else{
-        alert('not an actual call')
+        setLoading(false);
     }
 };
-const getMounts = () => axios.get(mountsApi);
-const getMinions = () => axios.get(minionsApi);
+    const getMounts = () => axios.get(mountsApi);
+    const getMinions = () => axios.get(minionsApi);
 
 function handleSearch(e:string){
     setText(e);
@@ -79,7 +88,9 @@ function handleSearch(e:string){
 
 function handleChange(){
     if(searchF){
+        setLoading(true);
         getCharacter();
+        setText('');
     }
 }
 
@@ -94,13 +105,16 @@ return(
             <TextField id="filled-basic" label="Character Url or ID" variant="filled" value={searchF}
                 onChange={(e) => handleSearch(e.target.value)} />
 
-            <Button variant="contained" onClick={handleChange}>Profile Character</Button>
+            <Button variant="contained" onClick={handleChange} disabled={!canClick}>Profile Character</Button>
             <div></div>
         </div>
     </section>
     {post && (
         <MemoizedCPanel userData={post} />)
     }
+    {loading && <div className="spin-overlay">
+     <CircularProgress />
+    </div>}
 </>
 )
 }
