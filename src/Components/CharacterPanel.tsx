@@ -5,9 +5,9 @@ import { Mounts } from '../Types/MountTypes';
 import { Minions } from '../Types/MinionTypes';
 
 export function CharacterPanel({userData}:any){
-    const mountCompletion = Math.round(userData.character.mounts.length/userData.mounts.count * 100);
-    const minionCompletion = Math.round(userData.character.minions.length/userData.minions.count * 100);
-    const achievementCompletion = Math.round(userData.character.achievements.length/2739 * 100);
+    const mountCompletion = Math.round(userData.character.mounts.length/userData.mounts.count * 100) | 0;
+    const minionCompletion = Math.round(userData.character.minions.length/userData.minions.count * 100) | 0;
+    const achievementCompletion = Math.round(userData.character.achievements.length/2739 * 100) | 0;
 
     return(
 

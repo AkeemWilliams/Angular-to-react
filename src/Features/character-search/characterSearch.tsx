@@ -8,6 +8,18 @@ import { Mounts} from '../../Types/MountTypes';
 import { Minions} from '../../Types/MinionTypes'
 import CircularProgress from '@mui/material/CircularProgress';
 
+//redux
+import { RootState } from '../../store'
+import { 
+    updateCharacter, 
+    selectChar, 
+    fetchChar, 
+    fetchMounts, 
+    fetchMinions } from '../characterSlice'
+// import { useSelector, useDispatch } from 'react-redux'
+import { useAppSelector, useAppDispatch } from '../../hooks';
+
+
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -17,7 +29,12 @@ const mountsApi = 'https://ffxivcollect.com/api/mounts';
 const minionsApi = 'https://ffxivcollect.com/api/minions';
 const MemoizedCPanel = memo(CharacterPanel);
 
+
 export default function CharacterSearch() {
+    const counte = useAppSelector(selectChar);
+    const dispatch = useAppDispatch();
+    console.log('yo', counte);
+
 
     const [searchF, setText] = useState('');
     const [loading, setLoading] = useState(false);
@@ -33,6 +50,9 @@ export default function CharacterSearch() {
             setCanClick(false);
         }
     });
+
+const getMounts = () => axios.get(mountsApi);
+const getMinions = () => axios.get(minionsApi);
 
 const getCharacter = () =>{
     let charcode = (searchF).match(/\d+/);
@@ -69,28 +89,45 @@ const getCharacter = () =>{
          mounts.results?.sort((a , b ) => a.name.localeCompare(b.name))
          minions.results?.sort((a , b ) => a.name.localeCompare(b.name))
 
-        setPost({character : character, mounts : mounts, minions : minions})
+        // setPost({character : character, mounts : mounts, minions : minions})
+        //dispatch(getCharacterR({character : character, mounts : mounts, minions : minions}))
+
         setLoading(false);
 
-          }).catch((error)=> console.log('Your Api dun messed up.'))
+          }).catch((error)=> {
+              console.log('Your Api dun messed up.', error);
+              return setLoading(false);
+
+            })
           .finally()
         )
     }else{
         setLoading(false);
     }
 };
-    const getMounts = () => axios.get(mountsApi);
-    const getMinions = () => axios.get(minionsApi);
+
 
     function handleSearch(e:string){
         setText(e);
     }
 
-    function handleChange(){
+    async function handleChange(){
         if(searchF){
             setLoading(true);
-            getCharacter();
+            //getCharacter();
+           await dispatch(fetchMounts());
+           console.log('2');
+           await dispatch(fetchMinions());
+           console.log('3');
+           await dispatch(fetchChar());
+           console.log('1');
+           await dispatch(updateCharacter())
+
+            setLoading(false);
+
             setText('');
+            console.log('huh',counte);
+
         }
     }
 
@@ -98,10 +135,10 @@ return(
 <>
     <section className='dashboard-search-area'>
         <h1>FFXIV Character Profiler</h1>
+        {counte.character.birthdate}
         <div className="search-inp">
             <p>A helpful tool to track collectibles in Final Fantasy XIV. Track Achievements, Mounts and Minion
                 Collections. Be it from seasoned players to sprouts, this tool is made for all collectors. </p>
-
             <TextField id="filled-basic" label="Character Url or ID" variant="filled" value={searchF}
                 onChange={(e) => handleSearch(e.target.value)} />
 
@@ -109,9 +146,10 @@ return(
             <div></div>
         </div>
     </section>
-    {post && (
-        <MemoizedCPanel userData={post} />)
-    }
+  {counte.loaded && ( 
+        <MemoizedCPanel userData={counte} />
+       )
+    } 
     {loading && <div className="spin-overlay">
      <CircularProgress />
     </div>}
