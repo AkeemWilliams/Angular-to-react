@@ -1,5 +1,5 @@
 import { Character } from './../Types/CharacterTypes';
-import { Minions } from './../Types/MinionTypes';
+import { Minions, Query, ResultsSubInt } from './../Types/MinionTypes';
 import { Mounts } from './../Types/MountTypes';
 import axios from "axios";
 
@@ -49,7 +49,11 @@ export const fetchMinions = createAsyncThunk(
 export interface cState {
     character: Character;
     mounts:Mounts;
-    minions:Minions;
+    minions:{
+      count: number;
+      query: Query;
+      results ? : (ResultsSubInt)[] | null;
+    };
     loaded:boolean;
 }
 

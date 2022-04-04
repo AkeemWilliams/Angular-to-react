@@ -1,7 +1,5 @@
 import React, { useState, memo, useEffect } from 'react';
 import axios from "axios";
-import { useContext } from 'react';
-import { CharacterContext } from '../../CharacterContext';
 import  {CharacterPanel}  from '../../Components/CharacterPanel';
 import { Character } from '../../Types/CharacterTypes';
 import { Mounts} from '../../Types/MountTypes';
@@ -9,16 +7,14 @@ import { Minions} from '../../Types/MinionTypes'
 import CircularProgress from '@mui/material/CircularProgress';
 
 //redux
-import { RootState } from '../../store'
 import { 
     updateCharacter, 
     selectChar, 
     fetchChar, 
     fetchMounts, 
-    fetchMinions } from '../characterSlice'
-// import { useSelector, useDispatch } from 'react-redux'
-import { useAppSelector, useAppDispatch } from '../../hooks';
+    fetchMinions } from '../characterSlice';
 
+import { useAppSelector, useAppDispatch } from '../../hooks';
 
 
 import Button from '@mui/material/Button';
@@ -31,16 +27,12 @@ const MemoizedCPanel = memo(CharacterPanel);
 
 
 export default function CharacterSearch() {
-    const counte = useAppSelector(selectChar);
+    const appStore = useAppSelector(selectChar);
     const dispatch = useAppDispatch();
-    console.log('yo', counte);
-
 
     const [searchF, setText] = useState('');
     const [loading, setLoading] = useState(false);
     const [canClick, setCanClick] = useState(false);
-
-    const {post, setPost}:any = useContext(CharacterContext);
 
 //Disable Search button
     useEffect(() => {
@@ -126,7 +118,7 @@ const getCharacter = () =>{
             setLoading(false);
 
             setText('');
-            console.log('huh',counte);
+            console.log('huh',appStore);
 
         }
     }
@@ -135,7 +127,7 @@ return(
 <>
     <section className='dashboard-search-area'>
         <h1>FFXIV Character Profiler</h1>
-        {counte.character.birthdate}
+        {appStore.character.birthdate}
         <div className="search-inp">
             <p>A helpful tool to track collectibles in Final Fantasy XIV. Track Achievements, Mounts and Minion
                 Collections. Be it from seasoned players to sprouts, this tool is made for all collectors. </p>
@@ -146,8 +138,8 @@ return(
             <div></div>
         </div>
     </section>
-  {counte.loaded && ( 
-        <MemoizedCPanel userData={counte} />
+  {appStore.loaded && ( 
+        <MemoizedCPanel userData={appStore} />
        )
     } 
     {loading && <div className="spin-overlay">

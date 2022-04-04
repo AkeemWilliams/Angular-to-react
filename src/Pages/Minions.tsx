@@ -1,6 +1,5 @@
 
-import { Key, useContext, useState } from 'react';
-import { CharacterContext } from '../CharacterContext';
+import { useState } from 'react';
 import {InputAdornment } from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -9,23 +8,28 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import CustomizedDialogs from '../Components/Dialog'
 import TextField from "@mui/material/TextField";
 import SearchIcon from '@mui/icons-material/Search';
-import { ResultsSubInt } from "../Types/MountTypes";
+import { ResultsSubInt } from "../Types/MinionTypes";
+
+import { useAppSelector, useAppDispatch } from './../hooks';
+import { selectChar} from '../Features/characterSlice';
+
+
 
 
 export default function Minions() {
-    const {post, setpost}:any = useContext(CharacterContext);
+
+    const appStore = useAppSelector(selectChar);
+
     const [open, setOpen] = useState(false);
     const [selectedMinion, setMinion] = useState({});
     const [selection, setSelection] = useState('All');
     const [searchText, setSearchText] = useState("");
-    const [filMinoins, setFilMinoins] = useState((post.minions.results ?? []))
+    const [filMinoins, setFilMinoins] = useState((appStore.minions.results! ?? []))
+    const beef =[];
 
 const handleSearchChange = (e:string) => {
     setSearchText(e)
-    setFilMinoins(
-        post.minions?.results?.filter((minion:ResultsSubInt )=> minion.name.toLowerCase().includes(e.toLowerCase())
-    )
-)
+    setFilMinoins(appStore.minions.results!.filter((minion)=> minion.name.toLowerCase().includes(e.toLowerCase())))
 };
     const menuItems = ['All', 'Collected', 'Uncollected'];
 
@@ -39,7 +43,7 @@ const handleSearchChange = (e:string) => {
         setOpen(true);
     }
 
-    if(post == undefined){
+    if(appStore == undefined){
         window.location.href = "/";
     }
 
@@ -80,12 +84,12 @@ const handleSearchChange = (e:string) => {
     <section>
         <div  className="items-collected">
             <p>
-                {post.character.minions.length} of {post.minions.count} obtained.
+                {appStore.character.minions.length} of {appStore.minions.count} obtained.
             </p>
         </div>
 
         <div className="minion-container">
-            {filMinoins.map((minion:ResultsSubInt)=>{
+            {filMinoins.map((minion)=>{
                 return(
                 <div className={`minion-box ${selection} ${minion.isOwned ? "owned" : ""}`} key={minion.id} onClick={() => handleMinionClick(minion)}>
                 <img src={minion.image} alt={minion.name}/>

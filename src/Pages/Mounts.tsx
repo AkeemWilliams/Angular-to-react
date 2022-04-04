@@ -1,6 +1,5 @@
 import { InputAdornment } from '@mui/material';
-import { useContext, useState } from 'react';
-import { CharacterContext } from '../CharacterContext';
+import { useState } from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -9,23 +8,26 @@ import TextField from "@mui/material/TextField";
 import SearchIcon from '@mui/icons-material/Search';
 import CustomizedDialogs from '../Components/Dialog';
 import { ResultsSubInt } from "../Types/MountTypes";
+import { useAppSelector } from './../hooks';
+import { selectChar} from '../Features/characterSlice';
+
+
 
 export default function Mounts() {
-const {post, setpost}:any = useContext(CharacterContext);
+
+const appStore = useAppSelector(selectChar);
+
 const [open, setOpen] = useState(false);
 const [selectedMount, setMount] = useState({});
 
 const [selection, setSelection] = useState('All');
 const menuItems = ['All', 'Collected', 'Uncollected'];
 const [searchText, setSearchText] = useState("");
-const [filMounts, setFilMounts] = useState((post.mounts.results ?? []))
+const [filMounts, setFilMounts] = useState((appStore.mounts.results ?? []))
 
 const handleSearchChange = (e:string) => {
     setSearchText(e)
-    setFilMounts(
-        post.mounts?.results?.filter((mount:ResultsSubInt )=> mount.name.toLowerCase().includes(e.toLowerCase())
-    )
-)
+    setFilMounts(appStore.mounts.results!.filter((mount)=> mount.name.toLowerCase().includes(e.toLowerCase())))
 };
 
 const handleChange = (event: SelectChangeEvent) => {
@@ -37,7 +39,7 @@ const handlemountClick = (mount:ResultsSubInt) =>{
     setOpen(true);
 }
 
-if(post == undefined){
+if(appStore == undefined){
     window.location.href = "/";
 }
 
@@ -77,7 +79,7 @@ return (
         <section>
             <div className="items-collected">
                 <p>
-                    {post.character.mounts.length} of {post.mounts.count} obtained.
+                    {appStore.character.mounts.length} of {appStore.mounts.count} obtained.
                 </p>
             </div>
 

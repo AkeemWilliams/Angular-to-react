@@ -7,6 +7,8 @@ import { myTheme } from './theme'
 import { useContext } from 'react';
 import { Button } from '@mui/material';
 import { CharacterContext, CharacterProvider } from './CharacterContext';
+import { useAppSelector, useAppDispatch } from './hooks';
+import { selectChar} from './Features/characterSlice';
 import  Dashboard from './Pages/Dashboard';
 import  Minions  from "./Pages/Minions";
 import  Mounts  from "./Pages/Mounts";
@@ -17,13 +19,14 @@ function App() {
 
   const character = useContext(CharacterContext);
   const postData = Object.values(character)[0];
-  console.log(Object.values(character));
+  const appStore = useAppSelector(selectChar);
+  console.log(Object.values(character), appStore);
 
   return (
     <div className="App">
     <nav>
         <Button component={Link} to="/">Dashboard</Button>
-        {postData && <>
+        {!!appStore.character.id && <>
         <Button component={Link} to="/mounts">Mounts</Button>
         <Button component={Link} to="/minions">Minions</Button>
         </>}
