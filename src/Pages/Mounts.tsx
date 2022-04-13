@@ -8,14 +8,13 @@ import TextField from "@mui/material/TextField";
 import SearchIcon from '@mui/icons-material/Search';
 import CustomizedDialogs from '../Components/Dialog';
 import { ResultsSubInt } from "../Types/MountTypes";
-import { useAppSelector } from './../hooks';
-import { selectChar} from '../Features/characterSlice';
+import { useAppSelector, useStoreState } from './../hooks';
 
 
 
 export default function Mounts() {
 
-const appStore = useAppSelector(selectChar);
+const appStoreMounts = useStoreState((state) => state.characterState.mounts);
 
 const [open, setOpen] = useState(false);
 const [selectedMount, setMount] = useState({});
@@ -23,11 +22,11 @@ const [selectedMount, setMount] = useState({});
 const [selection, setSelection] = useState('All');
 const menuItems = ['All', 'Collected', 'Uncollected'];
 const [searchText, setSearchText] = useState("");
-const [filMounts, setFilMounts] = useState((appStore.mounts.results ?? []))
+const [filMounts, setFilMounts] = useState((appStoreMounts.results ?? []))
 
 const handleSearchChange = (e:string) => {
     setSearchText(e)
-    setFilMounts(appStore.mounts.results!.filter((mount)=> mount.name.toLowerCase().includes(e.toLowerCase())))
+    setFilMounts(appStoreMounts.results!.filter((mount)=> mount.name.toLowerCase().includes(e.toLowerCase())))
 };
 
 const handleChange = (event: SelectChangeEvent) => {
@@ -39,7 +38,7 @@ const handlemountClick = (mount:ResultsSubInt) =>{
     setOpen(true);
 }
 
-if(appStore == undefined){
+if(appStoreMounts == undefined){
     window.location.href = "/";
 }
 
@@ -79,7 +78,7 @@ return (
         <section>
             <div className="items-collected">
                 <p>
-                    {appStore.character.mounts.length} of {appStore.mounts.count} obtained.
+                    {appStoreMounts.results?.length} of {appStoreMounts.count} obtained.
                 </p>
             </div>
 

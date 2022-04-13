@@ -180,7 +180,7 @@ const initialState: cState = {
 
   // Action creators are generated for each case reducer function
 export const { updateCharacter } = characterSlice.actions;
-export const selectChar = (state: RootState) => state.character;
+// export const selectChar = (state: RootState) => state.character;
 
 
 export default characterSlice.reducer

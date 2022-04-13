@@ -6,15 +6,8 @@ import { Mounts} from '../../Types/MountTypes';
 import { Minions} from '../../Types/MinionTypes'
 import CircularProgress from '@mui/material/CircularProgress';
 
-//redux
-import { 
-    updateCharacter, 
-    selectChar, 
-    fetchChar, 
-    fetchMounts, 
-    fetchMinions } from '../characterSlice';
 
-import { useAppSelector, useAppDispatch } from '../../hooks';
+import {  useAppDispatch, useStoreState, useStoreActions } from '../../hooks';
 
 
 import Button from '@mui/material/Button';
@@ -27,8 +20,10 @@ const MemoizedCPanel = memo(CharacterPanel);
 
 
 export default function CharacterSearch() {
-    const appStore = useAppSelector(selectChar);
-    const dispatch = useAppDispatch();
+    const easyPeasyGetMount = useStoreActions((actions) => actions.fetchMounts);
+
+    const appStoreCharacter = useStoreState((state) => state.characterState.character);
+    const appStoreLoaded = useStoreState((state) => state.characterState.loaded);
 
     const [searchF, setText] = useState('');
     const [loading, setLoading] = useState(false);
@@ -107,18 +102,17 @@ const getCharacter = () =>{
         if(searchF){
             setLoading(true);
             //getCharacter();
-           await dispatch(fetchMounts());
+        //    await dispatch(fetchMounts());
            console.log('2');
-           await dispatch(fetchMinions());
+        //    await dispatch(fetchMinions());
            console.log('3');
-           await dispatch(fetchChar());
+        //    await dispatch(fetchChar());
            console.log('1');
-           await dispatch(updateCharacter())
-
+           await easyPeasyGetMount();
             setLoading(false);
 
             setText('');
-            console.log('huh',appStore);
+            console.log('huh',appStoreCharacter);
 
         }
     }
@@ -127,7 +121,7 @@ return(
 <>
     <section className='dashboard-search-area'>
         <h1>FFXIV Character Profiler</h1>
-        {appStore.character.birthdate}
+        {appStoreCharacter.birthdate}
         <div className="search-inp">
             <p>A helpful tool to track collectibles in Final Fantasy XIV. Track Achievements, Mounts and Minion
                 Collections. Be it from seasoned players to sprouts, this tool is made for all collectors. </p>
@@ -138,8 +132,8 @@ return(
             <div></div>
         </div>
     </section>
-  {appStore.loaded && ( 
-        <MemoizedCPanel userData={appStore} />
+  {appStoreLoaded && ( 
+        <MemoizedCPanel userData={appStoreCharacter} />
        )
     } 
     {loading && <div className="spin-overlay">
