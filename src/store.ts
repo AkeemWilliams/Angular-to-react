@@ -1,8 +1,6 @@
-import { configureStore } from '@reduxjs/toolkit';
 import { createStore, action, thunk, Thunk } from 'easy-peasy';
 import { Action } from 'easy-peasy';
 import { Character } from './Types/CharacterTypes';
-import characterReducer from './Features/characterSlice';
 import { Minions, Query, ResultsSubInt } from './Types/MinionTypes';
 import { Mounts } from './Types/MountTypes';
 import axios from "axios";
@@ -25,10 +23,10 @@ export interface StoreModel {
   addChar: Action<StoreModel, Character>;
   addMounts:Action<StoreModel, Mounts>;
   addMinions:Action<StoreModel, Minions>
-  updateState: Action<StoreModel, cState>;
-  fetchChar:Thunk<StoreModel, Character>;
+  updateState: Action<StoreModel, cState | undefined>;
+  fetchChar:Thunk<StoreModel, Character | undefined>;
   fetchMounts:Thunk<StoreModel, Mounts | undefined>;
-  fetchMinions:Thunk<StoreModel, Minions>;
+  fetchMinions:Thunk<StoreModel, Minions | undefined>;
 
 }
 const initialState: cState = {
@@ -113,16 +111,22 @@ const characterApi = `http://localhost:3001/samplere`;
  const store = createStore<StoreModel>({
         characterState: initialState,
         addChar: action((state, payload) => {
+          console.log('cpay', [payload, state]);
           state.characterState.character = payload;
         }),
         addMounts: action((state, payload)=>{
+          console.log('mopay', [payload, state]);
+
           state.characterState.mounts = payload;
         }),
         addMinions: action((state, payload)=>{
+          console.log('mipay', [payload, state]);
+
           state.characterState.minions = payload;
         }),
-        updateState: action((state)=>{
+        updateState: action((state, _payload)=>{
           if(state.characterState.character.mounts != null)
+
           state.characterState.mounts.results = state.characterState.mounts.results?.map((o1) =>{
                if(state.characterState.character.mounts.findIndex((i) => i.id === o1.id) != -1){
                  return ({...o1, isOwned: true});
@@ -143,19 +147,20 @@ const characterApi = `http://localhost:3001/samplere`;
                return state;
         }),
         fetchChar: thunk(async (actions)=>{
+
           const result = await axios.get(characterApi);
           actions.addChar(result.data)
         }),
-        fetchMounts:thunk(async (actions, _payload)=>{
-          console.log('eeeeeeee');
-          const result = await axios.get(characterApi);
+        fetchMounts:thunk(async (actions, payload)=>{
+
+          const result = await axios.get(mountsApi);
           const mounts:Mounts = await result.data;
           mounts.results?.sort((a , b ) => a.name.localeCompare(b.name))
           actions.addMounts(mounts);
           
         }),
         fetchMinions: thunk(async (actions, payload)=>{
-          const result = await axios.get(characterApi);
+          const result = await axios.get(minionsApi);
           actions.addMinions(result.data)
 
         })

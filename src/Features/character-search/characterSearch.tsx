@@ -7,7 +7,7 @@ import { Minions} from '../../Types/MinionTypes'
 import CircularProgress from '@mui/material/CircularProgress';
 
 
-import {  useAppDispatch, useStoreState, useStoreActions } from '../../hooks';
+import { useStoreState, useStoreActions } from '../../hooks';
 
 
 import Button from '@mui/material/Button';
@@ -20,9 +20,14 @@ const MemoizedCPanel = memo(CharacterPanel);
 
 
 export default function CharacterSearch() {
+    const easyPeasyGetChar = useStoreActions((actions) => actions.fetchChar);
     const easyPeasyGetMount = useStoreActions((actions) => actions.fetchMounts);
+    const easyPeasyGetMinion = useStoreActions((actions) => actions.fetchMinions);
+    const easyPeasyUpdate = useStoreActions((actions) => actions.updateState);
 
+    const appStorestore = useStoreState((state) => state.characterState);
     const appStoreCharacter = useStoreState((state) => state.characterState.character);
+
     const appStoreLoaded = useStoreState((state) => state.characterState.loaded);
 
     const [searchF, setText] = useState('');
@@ -101,14 +106,13 @@ const getCharacter = () =>{
     async function handleChange(){
         if(searchF){
             setLoading(true);
-            //getCharacter();
-        //    await dispatch(fetchMounts());
-           console.log('2');
-        //    await dispatch(fetchMinions());
-           console.log('3');
-        //    await dispatch(fetchChar());
-           console.log('1');
            await easyPeasyGetMount();
+            console.log('2');
+           await easyPeasyGetMinion();
+           console.log('3');
+           await easyPeasyGetChar();
+           console.log('1');
+           easyPeasyUpdate(appStorestore);
             setLoading(false);
 
             setText('');
@@ -133,7 +137,7 @@ return(
         </div>
     </section>
   {appStoreLoaded && ( 
-        <MemoizedCPanel userData={appStoreCharacter} />
+        <MemoizedCPanel userData={appStorestore} />
        )
     } 
     {loading && <div className="spin-overlay">

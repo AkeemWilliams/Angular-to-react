@@ -10,26 +10,26 @@ import TextField from "@mui/material/TextField";
 import SearchIcon from '@mui/icons-material/Search';
 import { ResultsSubInt } from "../Types/MinionTypes";
 
-import { useAppSelector, useAppDispatch, useStoreState } from './../hooks';
+import { useStoreState } from './../hooks';
 
 
 
 
 export default function Minions() {
 
-    const appStoreMinions = useStoreState((state) => state.characterState.minions);
+    const appStoreMinions = useStoreState((state) => state.characterState);
 
 
     const [open, setOpen] = useState(false);
     const [selectedMinion, setMinion] = useState({});
     const [selection, setSelection] = useState('All');
     const [searchText, setSearchText] = useState("");
-    const [filMinoins, setFilMinoins] = useState((appStoreMinions.results! ?? []))
+    const [filMinoins, setFilMinoins] = useState((appStoreMinions.minions.results! ?? []))
     const beef =[];
 
 const handleSearchChange = (e:string) => {
     setSearchText(e)
-    setFilMinoins(appStoreMinions.results!.filter((minion)=> minion.name.toLowerCase().includes(e.toLowerCase())))
+    setFilMinoins(appStoreMinions.minions.results!.filter((minion)=> minion.name.toLowerCase().includes(e.toLowerCase())))
 };
     const menuItems = ['All', 'Collected', 'Uncollected'];
 
@@ -43,7 +43,7 @@ const handleSearchChange = (e:string) => {
         setOpen(true);
     }
 
-    if(appStoreMinions == undefined){
+    if(appStoreMinions.minions == undefined){
         window.location.href = "/";
     }
 
@@ -84,7 +84,7 @@ const handleSearchChange = (e:string) => {
     <section>
         <div  className="items-collected">
             <p>
-                {appStoreMinions.results?.length} of {appStoreMinions.count} obtained.
+                {appStoreMinions.character.minions.length} of {appStoreMinions.minions.count} obtained.
             </p>
         </div>
 
