@@ -13,6 +13,16 @@ import  Dashboard from './Pages/Dashboard';
 import  Minions  from "./Pages/Minions";
 import  Mounts  from "./Pages/Mounts";
 
+//recoil
+import {atom, useRecoilState} from "recoil";
+import { initialState } from './InitialState';
+
+export const recoilCharProfile = atom({
+key:"profileRepo",
+default:initialState
+})
+
+
 function App() {
   // const [post, setPost] = useState(null);
   // const value = {post, setPost};

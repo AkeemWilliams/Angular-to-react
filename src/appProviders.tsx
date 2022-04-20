@@ -3,14 +3,16 @@ import { CharacterProvider } from "./CharacterContext"
 import { myTheme } from "./theme"
 import { ReactNode } from 'react';
 import { store } from './store'
-import { Provider } from 'react-redux'
+import { Provider } from 'react-redux';
+import {RecoilRoot} from "recoil"
+
 
 export const AppProviders = ({children} : {children: ReactNode}) => {
 
     return <ThemeProvider theme={myTheme}>
-      <Provider store={store}>
+      <RecoilRoot>
           {children}
-     </Provider>
+     </RecoilRoot>
 
 </ThemeProvider>
 }

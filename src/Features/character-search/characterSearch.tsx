@@ -6,6 +6,9 @@ import { Mounts} from '../../Types/MountTypes';
 import { Minions} from '../../Types/MinionTypes'
 import CircularProgress from '@mui/material/CircularProgress';
 
+import { useRecoilState} from "recoil";
+import { recoilCharProfile } from '../../App';
+
 //redux
 import { 
     updateCharacter, 
@@ -33,6 +36,9 @@ export default function CharacterSearch() {
     const [searchF, setText] = useState('');
     const [loading, setLoading] = useState(false);
     const [canClick, setCanClick] = useState(false);
+
+    //recoil
+    const [character, recoilCharacter] = useRecoilState(recoilCharProfile);
 
 //Disable Search button
     useEffect(() => {
